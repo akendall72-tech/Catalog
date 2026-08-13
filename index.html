@@ -34,7 +34,7 @@
   header.site{
     background:linear-gradient(135deg, var(--green-900), var(--green-700));
     color:#fff;
-    padding:40px 24px 30px;
+    padding:40px 24px 0;
   }
   .header-inner{
     max-width:1000px;
@@ -58,7 +58,30 @@
     font-size:15px;
     color:#dfe9e1;
     max-width:640px;
-    margin:0;
+    margin:0 0 24px;
+  }
+
+  .tab-row{
+    display:flex;
+    gap:4px;
+    max-width:1000px;
+    margin:0 auto;
+  }
+  .tab-btn{
+    background:transparent;
+    border:none;
+    border-bottom:3px solid transparent;
+    color:#c7d7cc;
+    font-size:14.5px;
+    font-weight:700;
+    padding:12px 18px;
+    cursor:pointer;
+    transition:color 0.15s ease, border-color 0.15s ease;
+  }
+  .tab-btn:hover{color:#fff;}
+  .tab-btn.active{
+    color:#fff;
+    border-bottom-color:var(--amber-500);
   }
 
   main{
@@ -97,6 +120,9 @@
     white-space:nowrap;
   }
 
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
   .category-heading{
     font-size:12px;
     text-transform:uppercase;
@@ -108,6 +134,11 @@
     border-bottom:2px solid var(--green-700);
   }
   .category-heading:first-of-type{margin-top:8px;}
+  .category-note{
+    font-size:12.5px;
+    color:var(--ink-400);
+    margin:-6px 0 12px;
+  }
 
   .course-list{
     display:flex;
@@ -214,6 +245,15 @@
     color:var(--ink-400);
     font-size:15px;
   }
+  .code-tag{
+    font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:11px;
+    background:#f1efe8;
+    color:var(--ink-600);
+    border:1px solid var(--border);
+    padding:2px 7px;
+    border-radius:5px;
+  }
 
   footer{
     max-width:1000px;
@@ -235,6 +275,10 @@
     <h1>Agri-Service Training Catalog</h1>
     <p class="header-sub">A reference of Agri-Service technician, parts, and safety training courses.</p>
   </div>
+  <div class="tab-row">
+    <button class="tab-btn active" id="tabBtnInternal" data-tab="internal">Internal Agri-Service Training</button>
+    <button class="tab-btn" id="tabBtnAgco" data-tab="agco">AGCO Facility Training</button>
+  </div>
 </header>
 
 <main>
@@ -245,8 +289,15 @@
     </div>
   </div>
 
-  <div id="catalogRoot"></div>
-  <p class="no-results" id="noResults">No courses match your search.</p>
+  <div class="tab-panel active" id="panelInternal">
+    <div id="catalogRoot"></div>
+    <p class="no-results" id="noResultsInternal">No courses match your search.</p>
+  </div>
+
+  <div class="tab-panel" id="panelAgco">
+    <div id="agcoRoot"></div>
+    <p class="no-results" id="noResultsAgco">No courses match your search.</p>
+  </div>
 </main>
 
 <footer>
@@ -399,10 +450,112 @@ const categoryOrder = [
   "Safety & Compliance"
 ];
 
+// AGCO 2026 Technical Training Catalog — Levels 1–6 (Levels 7–9 currently have no published courses)
+const agcoLevels = [
+  {
+    level:"Level 1",
+    note:"Online curriculum, automatically assigned to all Service Technicians. Included in the All-In bundle.",
+    courses:[
+      {title:"ATS Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"This course will explain the systems and theory in ATS (Advanced Technology Systems), as well as that for the components utilized in each of these categories. Each Level 1 course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 course completed."},
+      {title:"Electrical-Electronics Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"This course will explain the systems and theory in Electrical/Electronics, as well as that for the components utilized in each of these categories. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Engines Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"This course will explain the systems and theory of Engines, as well as that for the components utilized in each of these categories. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Fundamentals of Agricultural Machine Operation – What Combines Do", itemType:"Online Course", cost:"Included in All-In bundle", description:"Learner will explore what a combine is, what it does, and how it is applied in agriculture. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Fundamentals of Agricultural Machine Operation – What Hay Equipment Does", itemType:"Online Course", cost:"Included in All-In bundle", description:"Learners will explore what hay equipment is, what it does, and how it is applied in agriculture. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Fundamentals of Agricultural Machine Operation – What Tractors Do", itemType:"Online Course", cost:"Included in All-In bundle", description:"Learner will explore what a tractor is, what it does, and how it is applied in agriculture. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Heating Ventilation and Air Conditioning Systems (HVAC)", itemType:"Online Course", cost:"Included in All-In bundle", description:"This course will explain the systems and theory of HVAC, as well as that for the components utilized in each of these categories. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Hydraulics Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"This course will explain the systems and theory of Hydraulics, as well as that for the components utilized in each of these categories. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."},
+      {title:"Powertrain Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"This course will explain the systems and theory of Powertrains, as well as that for the components utilized in each of these categories. Each Level 1 Certification course will consist of approximately 2 hours of online learning and the technician will receive two (2) hours of non-ILT Technical Training credit for each Level 1 Certification course completed."}
+    ]
+  },
+  {
+    level:"Level 2",
+    note:"Online curriculum, automatically assigned to all Service Technicians. Included in the All-In bundle.",
+    courses:[
+      {title:"Heating Ventilation and Air Conditioning Systems (HVAC)", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including explanation specific components, theory of operation, and intro to diagnostics."},
+      {title:"AGCO Systems Techconnect, EDT, Fendias", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including explanation specific components, theory of operation, and intro to diagnostics."},
+      {title:"Fundamentals of Agricultural Machine Operation – Combine Operation", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including the role of the combine in agriculture, overview of operation, and intro to how to optimize machine performance."},
+      {title:"Fundamentals of Agricultural Machine Operation – Hay Equipment Operation", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including the role of hay equipment in agriculture, overview of operation, and intro to how to optimize machine performance."},
+      {title:"Hydraulics Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Associate Certification including explanation specific components, theory of operation, and intro to diagnostics."},
+      {title:"AGCO OEM Engines Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in Level 1 Technical Certification including explanation specific components, theory of operation, and intro to diagnostics."},
+      {title:"AGCO OEM Powertrain Course", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including explanation specific components, theory of operation, and intro to diagnostics."},
+      {title:"ATS Course: Fuse or Precision Farming", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including explanation specific components, theory of operation, and intro to diagnostics."},
+      {title:"Electrical – Electronics", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including explanation of specific components, theory of operation, and intro to diagnostics."},
+      {title:"Fundamentals of Agricultural Machine Operation – Tractor Operation", itemType:"Online Course", cost:"Included in All-In bundle", description:"Student will expand on the theory learned in the Level 1 Certification including the role of the tractor in agriculture, overview of operation, and intro to how to optimize machine performance."}
+    ]
+  },
+  {
+    level:"Level 3",
+    note:"Instructor-led certification course.",
+    courses:[
+      {title:"AGCO Level 3 Certification", brand:"All", category:"All", itemType:"Instructor-Led Course", code:"NASVCAGMLPCRTMLP030I", cost:"$1,750", length:"5 days", description:null}
+    ]
+  },
+  {
+    level:"Level 4",
+    note:"Foundation Technician instructor-led courses, organized by brand and product.",
+    courses:[
+      {title:"MF & FT Planters", brand:"Fendt", category:"Seeding & Tillage", itemType:"Instructor Led Course", code:"NASVCFTSTLMOMPFO102I", cost:"$700", length:"2 days"},
+      {title:"Fendt Wheel Tractors", brand:"Fendt", category:"HHP", itemType:"Instructor Led Course", code:"NASVCFTWTRTRAPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"Fendt IDEAL Combines", brand:"Fendt", category:"Combines", itemType:"Instructor Led Course", code:"NASVCFTCOMIDLPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"Fendt Track Tractors", brand:"Fendt", category:"HHP", itemType:"Instructor Led Course", code:"NASVCFTTTRMTTPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"Fendt 900 Series Rogator", brand:"Fendt", category:"Application Equipment", itemType:"Instructor Led Course", code:"NASVCFTSPYRGTPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"Gleaner Combines", brand:"Gleaner", category:"Combines", itemType:"Instructor Led Course", code:"NASVCGLCOMRTYPFO102I", cost:"$350", length:"1 day"},
+      {title:"MF Low Horsepower Tractors", brand:"Massey Ferguson", category:"CUE", itemType:"Instructor Led Course", code:"NASVCMFWTRLHPPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"MF HHP (5S-8S) Series Tractors", brand:"Massey Ferguson", category:"HHP", itemType:"Instructor Led Course", code:"NASVCMFWTRTRAPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"MF 500R Sprayer", brand:"Massey Ferguson", category:"Application Equipment", itemType:"Instructor Led Course", code:"NASVCMFSPYMFSPFO102I", cost:"$1,050", length:"3 days"},
+      {title:"MF Windrowers", brand:"Massey Ferguson", category:"Hay", itemType:"Instructor Led Course", code:"NASVCMFWNRHYTPFO102I", cost:"$700", length:"2 days"},
+      {title:"MF Square Balers", brand:"Massey Ferguson", category:"Hay", itemType:"Instructor Led Course", code:"NASVCMFLSBLSBPFO102I", cost:"$700", length:"2 days"},
+      {title:"Technology", brand:"Technology", category:null, itemType:"Instructor Led Course", code:"NASVCAGMLPMLPDIA203I", cost:"$1,050", length:"3 days"}
+    ]
+  },
+  {
+    level:"Level 5",
+    note:"Master Professional Technician instructor-led courses.",
+    courses:[
+      {title:"Electrical & Hydraulics", brand:"All", category:"Electrical & Hydraulics", itemType:"Instructor-Led", code:"NASVCAGMLPMLPELE201I", cost:"$1,400", length:"4 days"},
+      {title:"Engines & Powertrains", brand:"All", category:"Engines & Powertrains", itemType:"Instructor-Led", code:"NASVCAGMLPMLPENG202I", cost:"$1,400", length:"4 days"}
+    ]
+  },
+  {
+    level:"Level 6",
+    note:"Expert-level instructor-led courses, organized by brand and product.",
+    courses:[
+      {title:"Fendt Track Tractors", brand:"Fendt", category:"HHP", itemType:"Instructor-Led Course", code:"NASVCFTTTRMTTADV302I", cost:"$1,050", length:"3 days"},
+      {title:"Fendt Wheel Tractors", brand:"Fendt", category:"HHP", itemType:"Instructor-Led Course", code:"NASVCFTWTRTRACRT302I", cost:"$1,050", length:"3 days"},
+      {title:"Fendt 900 Series Rogator", brand:"Fendt", category:"Application Equipment", itemType:"Instructor-Led Course", code:"NASVCFTSPYRGTADV302I", cost:"$1,050", length:"3 days"},
+      {title:"Fendt Momentum Planter", brand:"Fendt", category:"Seeding & Tillage", itemType:"Instructor-Led Course", code:"NASVCFTSTLMOMADV302I", cost:"$700", length:"2 days"},
+      {title:"IDEAL Combines", brand:"Fendt", category:"Combines", itemType:"Instructor-Led Course", code:"NASVCFTCOMIDLADV302I", cost:"$1,050", length:"3 days"},
+      {title:"Gleaner Combines", brand:"Gleaner", category:"Combines", itemType:"Instructor-Led Course", code:"NASVCGLCOMRTYADV302I", cost:"$700", length:"2 days"},
+      {title:"MF Commercial Round Balers 4100V", brand:"Massey Ferguson", category:"Hay", itemType:"Instructor-Led Course", code:"NASVCMFRDBRDBADV303I", cost:"$350", length:"1 day"},
+      {title:"MF Square Balers", brand:"Massey Ferguson", category:"Hay", itemType:"Instructor-Led Course", code:"NASVCMFLSBLSBADV302I", cost:"$350", length:"1 day"},
+      {title:"MF RB146/156 Round Balers", brand:"Massey Ferguson", category:"Hay", itemType:"Instructor-Led Course", code:"NASVCMFRDBRDBADV304I", cost:"$350", length:"1 day"},
+      {title:"MF Windrowers", brand:"Massey Ferguson", category:"Hay", itemType:"Instructor-Led Course", code:"NASVCMFWNRHYTADV302I", cost:"$175", length:"1 day"},
+      {title:"Massey Ferguson Compact Tractors Series", brand:"Massey Ferguson", category:"LHP", itemType:"Instructor-Led Course", code:"NASVCMFWTRLHPADV301I", cost:"$1,050", length:"3 days"},
+      {title:"Massey Ferguson HHP (5S-8S) Series", brand:"Massey Ferguson", category:"HHP", itemType:"Instructor-Led Course", code:"NASVCMFWTRTRAADV302I", cost:"$1,050", length:"3 days"},
+      {title:"MF R500 Sprayer", brand:"Massey Ferguson", category:"Application Equipment", itemType:"Instructor-Led Course", code:"NASVCMFPSYADVR5M302I", cost:"$1,050", length:"3 days"},
+      {title:"TerraGator C Series", brand:"TerraGator", category:"Application Equipment", itemType:"Instructor-Led Course", code:"NASVCAGSPYTRGADV302I", cost:"$1,050", length:"3 days"}
+    ]
+  }
+];
+
 const root = document.getElementById('catalogRoot');
-const noResults = document.getElementById('noResults');
+const agcoRoot = document.getElementById('agcoRoot');
+const noResultsInternal = document.getElementById('noResultsInternal');
+const noResultsAgco = document.getElementById('noResultsAgco');
 const resultCount = document.getElementById('resultCount');
 const searchInput = document.getElementById('searchInput');
+
+let activeTab = 'internal';
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.getElementById('panelInternal').classList.toggle('active', activeTab === 'internal');
+    document.getElementById('panelAgco').classList.toggle('active', activeTab === 'agco');
+    render();
+  });
+});
 
 function courseMatchesSearch(course, query){
   if(!query) return true;
@@ -410,6 +563,15 @@ function courseMatchesSearch(course, query){
     course.title, course.subtitle, course.description,
     course.category, course.level, course.audience,
     ...(course.topics||[]), ...(course.prereqs||[])
+  ].join(' ').toLowerCase();
+  return haystack.includes(query.toLowerCase());
+}
+
+function agcoCourseMatchesSearch(course, query){
+  if(!query) return true;
+  const haystack = [
+    course.title, course.brand, course.category, course.itemType,
+    course.code, course.description
   ].join(' ').toLowerCase();
   return haystack.includes(query.toLowerCase());
 }
@@ -445,18 +607,42 @@ function renderCourse(course){
     </details>`;
 }
 
-function render(){
-  const query = searchInput.value.trim();
+function renderAgcoCourse(course){
+  const meta = [];
+  if(course.brand) meta.push(`<span>${course.brand}</span>`);
+  if(course.category) meta.push(`<span>${course.category}</span>`);
+  if(course.itemType) meta.push(`<span>${course.itemType}</span>`);
+  if(course.length) meta.push(`<span>&#128337; ${course.length}</span>`);
+  if(course.cost) meta.push(`<span>&#128176; ${course.cost}</span>`);
+  if(course.code) meta.push(`<span class="code-tag">${course.code}</span>`);
+
+  const desc = course.description
+    ? `<p class="card-desc" style="margin:0;">${course.description}</p>`
+    : `<p class="card-desc" style="margin:0;">No published description — see course code in AGCO Academy for details.</p>`;
+
+  return `
+    <details class="course">
+      <summary>
+        <span class="summary-left">
+          <span class="course-title">${course.title}</span>
+        </span>
+        <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="course-body">
+        <div class="card-meta">${meta.join('')}</div>
+        ${desc}
+      </div>
+    </details>`;
+}
+
+function renderInternal(query){
   const filtered = courses.filter(course => courseMatchesSearch(course, query));
-
-  resultCount.textContent = `${filtered.length} of ${courses.length} courses`;
-
   if(filtered.length === 0){
     root.innerHTML = '';
-    noResults.style.display = 'block';
-    return;
+    noResultsInternal.style.display = 'block';
+    return filtered.length;
   }
-  noResults.style.display = 'none';
+  noResultsInternal.style.display = 'none';
 
   const byCategory = {};
   filtered.forEach(c => {
@@ -472,6 +658,46 @@ function render(){
     html += `</div>`;
   });
   root.innerHTML = html;
+  return filtered.length;
+}
+
+function renderAgco(query){
+  let totalShown = 0;
+  let html = '';
+  agcoLevels.forEach(section => {
+    const filtered = section.courses.filter(c => agcoCourseMatchesSearch(c, query));
+    if(filtered.length === 0) return;
+    totalShown += filtered.length;
+    html += `<h2 class="category-heading">${section.level}</h2>`;
+    if(section.note) html += `<p class="category-note">${section.note}</p>`;
+    html += `<div class="course-list">`;
+    filtered.forEach(c => html += renderAgcoCourse(c));
+    html += `</div>`;
+  });
+
+  if(totalShown === 0){
+    agcoRoot.innerHTML = '';
+    noResultsAgco.style.display = 'block';
+  } else {
+    noResultsAgco.style.display = 'none';
+    agcoRoot.innerHTML = html;
+  }
+  return totalShown;
+}
+
+function agcoTotalCount(){
+  return agcoLevels.reduce((sum, s) => sum + s.courses.length, 0);
+}
+
+function render(){
+  const query = searchInput.value.trim();
+  if(activeTab === 'internal'){
+    const shown = renderInternal(query);
+    resultCount.textContent = `${shown} of ${courses.length} courses`;
+  } else {
+    const shown = renderAgco(query);
+    resultCount.textContent = `${shown} of ${agcoTotalCount()} courses`;
+  }
 }
 
 searchInput.addEventListener('input', render);
