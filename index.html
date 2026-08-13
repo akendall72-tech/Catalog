@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agri-Service Training Catalog</title>
+<style>
+  :root{
+    --green-900:#123524;
+    --green-800:#1a4a30;
+    --green-700:#215e3c;
+    --green-600:#2c7a4b;
+    --amber-500:#d98829;
+    --amber-600:#c07620;
+    --bg:#f6f5f1;
+    --card-bg:#ffffff;
+    --ink-900:#1c231d;
+    --ink-600:#4b564d;
+    --ink-400:#7a857b;
+    --border:#e2e1da;
+    --radius:10px;
+    --shadow:0 1px 3px rgba(18,53,36,0.08), 0 1px 2px rgba(18,53,36,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink-900);
+    line-height:1.5;
+  }
+  a{color:inherit;}
+
+  header.site{
+    background:linear-gradient(135deg, var(--green-900), var(--green-700));
+    color:#fff;
+    padding:40px 24px 30px;
+  }
+  .header-inner{
+    max-width:1000px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:12px;
+    font-weight:700;
+    color:var(--amber-500);
+    margin:0 0 10px;
+  }
+  h1{
+    font-size:clamp(26px,4vw,36px);
+    margin:0 0 10px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+  }
+  .header-sub{
+    font-size:15px;
+    color:#dfe9e1;
+    max-width:640px;
+    margin:0;
+  }
+
+  main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:28px 24px 80px;
+  }
+
+  .controls{
+    position:sticky;
+    top:0;
+    z-index:5;
+    background:var(--bg);
+    padding:16px 0 14px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:24px;
+  }
+  .search-row{
+    display:flex;
+    gap:10px;
+  }
+  #searchInput{
+    flex:1;
+    padding:11px 16px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#fff;
+    font-size:15px;
+    color:var(--ink-900);
+  }
+  #searchInput:focus{outline:2px solid var(--green-600); outline-offset:1px;}
+  .result-count{
+    font-size:13px;
+    color:var(--ink-400);
+    align-self:center;
+    white-space:nowrap;
+  }
+
+  .category-heading{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-weight:800;
+    color:var(--green-800);
+    margin:32px 0 12px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--green-700);
+  }
+  .category-heading:first-of-type{margin-top:8px;}
+
+  .course-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  details.course{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  details.course summary{
+    list-style:none;
+    cursor:pointer;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  details.course summary::-webkit-details-marker{display:none;}
+  .summary-left{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    flex-wrap:wrap;
+    min-width:0;
+  }
+  .course-title{
+    font-size:15.5px;
+    font-weight:700;
+    color:var(--green-900);
+  }
+  .course-subtitle{
+    font-size:12.5px;
+    color:var(--ink-400);
+    font-weight:500;
+  }
+  .chevron{
+    flex-shrink:0;
+    width:18px;
+    height:18px;
+    color:var(--ink-400);
+    transition:transform 0.15s ease;
+  }
+  details[open] .chevron{transform:rotate(180deg);}
+
+  .course-body{
+    padding:0 18px 18px;
+    border-top:1px solid var(--border);
+    padding-top:14px;
+  }
+  .card-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    font-size:12.5px;
+    color:var(--ink-400);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .card-meta span{display:inline-flex; align-items:center; gap:4px;}
+  .card-desc{
+    font-size:13.5px;
+    color:var(--ink-600);
+    margin:0 0 12px;
+  }
+  .card-section-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-400);
+    font-weight:700;
+    margin:0 0 6px;
+  }
+  .tag-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:12px;
+  }
+  .tag{
+    font-size:11.5px;
+    background:#eef4ef;
+    color:var(--green-800);
+    border:1px solid #dbe8dd;
+    padding:3px 9px;
+    border-radius:6px;
+  }
+  .prereq-list{
+    margin:0;
+    padding-left:18px;
+    font-size:12.5px;
+    color:var(--ink-600);
+  }
+  .prereq-list li{margin-bottom:2px;}
+  .no-results{
+    display:none;
+    text-align:center;
+    padding:60px 20px;
+    color:var(--ink-400);
+    font-size:15px;
+  }
+
+  footer{
+    max-width:1000px;
+    margin:0 auto;
+    padding:24px 24px 60px;
+    color:var(--ink-400);
+    font-size:13px;
+    border-top:1px solid var(--border);
+  }
+  footer a{color:var(--green-700); text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="header-inner">
+    <p class="eyebrow">Agri-Service Technical Training Program</p>
+    <h1>Agri-Service Training Catalog</h1>
+    <p class="header-sub">A reference of Agri-Service technician, parts, and safety training courses.</p>
+  </div>
+</header>
+
+<main>
+  <div class="controls">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="Search courses, equipment, or topics…" autocomplete="off">
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+
+  <div id="catalogRoot"></div>
+  <p class="no-results" id="noResults">No courses match your search.</p>
+</main>
+
+<footer>
+  Agri-Service, LLC &middot; Technician Training Program &middot; For scheduling, see the Open Seat Report or the Absorb LMS.
+  Questions: <a href="mailto:andrewkendall@agri-service.com">andrewkendall@agri-service.com</a>.
+</footer>
+
+<script>
+const courses = [
+  {
+    title:"Fendt Track Level 4 Foundations",
+    subtitle:"900/1100 Series VMT Track Tractors",
+    level:"Level 4",
+    category:"Fendt Equipment",
+    credits:"24 Credits",
+    duration:null,
+    audience:"Service Technicians",
+    description:"This course will provide an overview of the systems found on the Fendt 900 and 1100 series VMT track tractors. Activities will include both in-class lectures on system operation of Emissions, Hydraulic, Powertrain, and Electrical systems. The Shop activities will vary depending on available machine models. All shop activities are designed to support the institutional and course objectives and will be evaluated by the instructor on a pass/fail basis.",
+    topics:["TechConnect & DIN lookups","Wiring diagram troubleshooting","Software updates & calibrations","Track alignment & tensioning","Implement hydraulics"],
+    prereqs:["Level 1 Technical Curriculum","Level 2 Technical Curriculum","Level 3"]
+  },
+  {
+    title:"Fendt Wheeled Level 4 Foundations",
+    subtitle:"300–1000 Series Wheeled Tractors",
+    level:"Level 4",
+    category:"Fendt Equipment",
+    credits:"24 Credits",
+    duration:null,
+    audience:"Service Technicians",
+    description:"This course will provide an overview of the systems found on the Fendt 300-1000 series wheeled tractors. Students will learn how to access service-related literature in TechConnect and search for specific information. This course is designed to be a 50/50 split between in-class lecture and shop activities to apply what has been covered in lecture. Students will learn how to perform some basic troubleshooting using the Fendt service systems and service tools. We will provide an overview the systems found on Fendt wheeled tractors with a focus on “Product Specific Procedural Knowledge”.",
+    topics:["DIN system & TechConnect","Engine model alignment by series","CAN bus testing","FendtOne calibrations","CVT & implement hydraulics"],
+    prereqs:["Level 1 Technical Curriculum","Level 2 Technical Curriculum"]
+  },
+  {
+    title:"Fendt Wheeled Level 6 Expert",
+    subtitle:"300–1000 Series · Advanced Diagnostics",
+    level:"Level 6",
+    category:"Fendt Equipment",
+    credits:"24 Credits",
+    duration:null,
+    audience:"Service Technicians",
+    description:"This course will consist of interactive lectures and shop activities in teams. The in-class lectures will be an in-depth look into specific systems on the Fendt wheeled tractor line-up. The shop activities will mostly include troubleshooting activities with some systems-based procedure worksheets.",
+    topics:["Advanced CAN network troubleshooting","Emission system strategies","VarioDrive transmission","CVT hydraulic testing","Front axle suspension diagnostics"],
+    prereqs:["Level 4 Fendt Wheeled Foundations"]
+  },
+  {
+    title:"Electrical/Electronics & Hydraulics Level 5",
+    subtitle:"Professional Development",
+    level:"Level 5",
+    category:"Systems – Professional Development",
+    credits:"32 Credits",
+    duration:"4 Days",
+    audience:"Service Technicians",
+    description:"This four-day course builds on the technician's foundation training in electrical and hydraulic systems used on AGCO equipment. The first two days focus on electrical systems architecture, reinforcing the input-processor-output model and reviewing Level 3/4 material before moving into digital communication systems, electrical sensors, and the CAN Bus network. Technicians will use multimeters, lab scopes, and product literature to analyze circuits and diagnose faults. The final two days cover the fundamental scientific theories that govern hydraulic system operation, including open center, closed center load sensing (CCLS), flow sharing, and closed loop hydraulic architectures. Students will read and interpret hydraulic schematics, perform baseline hydraulic testing, and use hydraulic test equipment to isolate and troubleshoot system faults.",
+    topics:["Electrical fundamentals & CAN Bus","Hydraulic schematics & symbols","Hydraulic system architecture","Baseline hydraulic testing"],
+    prereqs:["Any Level 4 Product Class"]
+  },
+  {
+    title:"Engines/Powertrains Level 5",
+    subtitle:"Professional Development",
+    level:"Level 5",
+    category:"Systems – Professional Development",
+    credits:"32 Credits",
+    duration:"4 Days",
+    audience:"Service Technicians",
+    description:"In this four-day course, technicians will explore the Tier 4 Final AGCO Power engine systems used across AGCO machinery, with an emphasis on the high-pressure common rail (HPCR) fuel system. Students will identify fuel system components, injector types, and IQA calibration codes, and will use the Electronic Diagnostic Tool (EDT) and common rail diagnostic kit to perform fuel delivery rate, PCV hysteresis, and high pressure fuel system tests. The course also covers the air control and SCR aftertreatment systems and how to run engine tests and diagnose malfunctions using the EDT. The course then transitions into powertrains, covering continuously variable transmission (CVT) theory and operation, Dyna 6 / Auto Power 6 transmission hydraulics, and the general function of differentials used across AGCO equipment. Classroom time is limited in favor of lab diagnostics, testing, and repair of key AGCO engine and powertrain systems. Students will use AGCO diagnostic tools and procedures to determine whether a system is functioning properly, explain to instructors what they are testing and the expected results, and develop a complete repair plan, including parts list and special tools, for a CVT insert replacement scenario. A written test with a required score of 80% is given at the end of the course; two attempts are permitted to pass.",
+    topics:["HPCR fuel system & injector calibration","SCR aftertreatment & DEF","EDT diagnostic testing","CVT & transmission hydraulics"],
+    prereqs:["Any Level 4 Product Class"]
+  },
+  {
+    title:"Mobile Air Conditioning (MAC) Systems Refresher",
+    subtitle:"Professional Development",
+    level:"Level 5",
+    category:"Systems – Professional Development",
+    credits:"4 Credits",
+    duration:"4 Hours",
+    audience:"Current Technicians",
+    description:"This four-hour refresher course is designed for current technicians who have prior experience servicing mobile air conditioning systems. The course reviews A/C system operation and the refrigeration cycle, reinforces safety and environmental/EPA Section 609 refrigerant handling requirements, and provides hands-on practice using field service equipment — a manual manifold gauge set and a recovery-only machine for recovery and diagnosis, and a refrigerant bottle with a digital scale for manual recharging. The course concludes with basic troubleshooting of common A/C system complaints using gauge readings and symptom-based diagnosis.",
+    topics:["Refrigeration cycle review","EPA Section 609 compliance","Manual gauge set & recovery machine","A/C troubleshooting"],
+    prereqs:["Current 609 Certification"]
+  },
+  {
+    title:"Massey Hay Tools Level 4 Foundations",
+    subtitle:"Large Square Balers & WR Windrowers",
+    level:"Level 4",
+    category:"Hay Equipment",
+    credits:"24 Credits",
+    duration:null,
+    audience:"Service Technicians",
+    description:"This course will provide an overview of the systems found on the Massey large square baler and WR windrower. For balers this course will have a focus on mechanical adjustments and knotter systems, on windrowers we will focus on operation settings/terminal navigation and theory of operation. For both machines we will also be covering PDI items.",
+    topics:["Knotter stack assembly & timing","Stuffer, needle & brake adjustments","Windrower terminal & calibrations","Header & cutter bar setup"],
+    prereqs:["Level 1 Technical Curriculum","Level 2 Technical Curriculum","Level 3"]
+  },
+  {
+    title:"TerraGator C Series / AirMax Precision",
+    subtitle:"Dry Box Only",
+    level:null,
+    category:"Application",
+    credits:"16 Credits",
+    duration:"2 Days",
+    audience:"Service Technicians",
+    description:"This two-day, dry box only course builds technicians' systems-level knowledge of the TerraGator C Series chassis and AirMax Precision dry spreader. Day one covers chassis electrical architecture, CAN bus network structure, ML260 CVT theory and pressure testing, and Kawasaki K3VLS steering pump / Danfoss electrohydraulic steering diagnostics. Day two covers the AirMax Precision dry box: hydraulics, the Viper 4+/RCM rate control system, calibration, and application set-up, including spread pattern and bag test certification. Students will use lab scopes, multimeters, and hydraulic test equipment, update Raven software, and troubleshoot common chassis and AirMax faults.",
+    topics:["Chassis electrical & CAN bus","CVT pressure testing","Steering diagnostics","AirMax hydraulics & conveyor","Rate control calibration","Spread pattern & bag test certification"],
+    prereqs:[]
+  },
+  {
+    title:"Trimble PTx Steering 1 (Service)",
+    subtitle:"Guidance System Setup, Calibration & Diagnostics",
+    level:"Advanced",
+    category:"Precision Ag & Guidance",
+    credits:"16 Credits",
+    duration:null,
+    audience:"Service Technicians",
+    description:"This hands-on training course is designed for technicians working with Trimble PTX guidance systems. It provides both foundational and advanced knowledge in system setup, calibration, diagnostics, and troubleshooting. Through a combination of classroom instruction, shop-based activities, and self-guided learning, technicians will develop the skills necessary to support field operations and ensure optimal performance of Trimble guidance technology.",
+    topics:["Trimble service literature & vehicle profiles","GFX display navigation","Steering calibration & tuning","Software update procedures","Guidance troubleshooting"],
+    prereqs:[]
+  },
+  {
+    title:"Parts Solutions for PTx Guidance",
+    subtitle:"Level 1 · Trimble PTx Product Line",
+    level:"Level 1",
+    category:"Precision Ag & Guidance",
+    credits:"8 Credits",
+    duration:"2 Days",
+    audience:"Parts Associates",
+    description:"This introductory course is designed specifically for Parts Associates who support customers using Trimble PTx steering and guidance systems. Participants will gain a foundational understanding of Trimble PTx product lines, key system components, and how steering solutions integrate with agricultural equipment. The course will cover basic system operation, component identification, compatibility considerations, and common replacement parts used in installation and service. Participants will also learn how to navigate parts catalogs, identify correct part numbers, and understand upgrade paths for current and legacy systems. By the end of the course, attendees will be better prepared to confidently assist customers and technicians, improve parts lookup accuracy, and support the growing demand for precision agriculture steering solutions.",
+    topics:["GNSS & correction principles","Trimble PTx component ID","Licenses & subscriptions","Parts catalog navigation"],
+    prereqs:[]
+  },
+  {
+    title:"Lifting and Rigging",
+    subtitle:"Qualified Rigger Certification",
+    level:"Certification",
+    category:"Safety & Compliance",
+    credits:"5 Credits",
+    duration:null,
+    audience:"All Technicians",
+    description:"This course is focused on the safety of overhead lifting and rigging. We will also be covering cribbing and lockout/tagout procedures. OSHA requires any person operating an overhead crane to be designated a “qualified rigger”. This course covers the topics required for a person to be qualified. We will be using the Crosby Rigger ONE program as a guide.",
+    topics:["Rigging plan & load calculations","Hardware selection & inspection","Cribbing procedures","Lockout/Tagout (LOTO)"],
+    prereqs:["Lifting and Rigging Online course available in the LMS"]
+  }
+];
+
+const categoryOrder = [
+  "Fendt Equipment",
+  "Systems – Professional Development",
+  "Hay Equipment",
+  "Application",
+  "Precision Ag & Guidance",
+  "Safety & Compliance"
+];
+
+const root = document.getElementById('catalogRoot');
+const noResults = document.getElementById('noResults');
+const resultCount = document.getElementById('resultCount');
+const searchInput = document.getElementById('searchInput');
+
+function courseMatchesSearch(course, query){
+  if(!query) return true;
+  const haystack = [
+    course.title, course.subtitle, course.description,
+    course.category, course.level, course.audience,
+    ...(course.topics||[]), ...(course.prereqs||[])
+  ].join(' ').toLowerCase();
+  return haystack.includes(query.toLowerCase());
+}
+
+function renderCourse(course){
+  const meta = [];
+  if(course.level) meta.push(`<span>${course.level}</span>`);
+  if(course.credits) meta.push(`<span>&#127891; ${course.credits}</span>`);
+  if(course.duration) meta.push(`<span>&#128337; ${course.duration}</span>`);
+  if(course.audience) meta.push(`<span>&#128101; ${course.audience}</span>`);
+
+  const topics = (course.topics||[]).map(t => `<span class="tag">${t}</span>`).join('');
+  const prereqs = (course.prereqs||[]).length
+    ? `<p class="card-section-label">Prerequisites</p><ul class="prereq-list">${course.prereqs.map(p => `<li>${p}</li>`).join('')}</ul>`
+    : `<p class="card-section-label">Prerequisites</p><p class="card-desc" style="margin:0;">None</p>`;
+
+  return `
+    <details class="course">
+      <summary>
+        <span class="summary-left">
+          <span class="course-title">${course.title}</span>
+          <span class="course-subtitle">${course.subtitle||''}</span>
+        </span>
+        <svg class="chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5L10 12.5L15 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="course-body">
+        <div class="card-meta">${meta.join('')}</div>
+        <p class="card-desc">${course.description}</p>
+        <p class="card-section-label">Key Topics</p>
+        <div class="tag-row">${topics}</div>
+        ${prereqs}
+      </div>
+    </details>`;
+}
+
+function render(){
+  const query = searchInput.value.trim();
+  const filtered = courses.filter(course => courseMatchesSearch(course, query));
+
+  resultCount.textContent = `${filtered.length} of ${courses.length} courses`;
+
+  if(filtered.length === 0){
+    root.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+
+  const byCategory = {};
+  filtered.forEach(c => {
+    byCategory[c.category] = byCategory[c.category] || [];
+    byCategory[c.category].push(c);
+  });
+
+  let html = '';
+  categoryOrder.forEach(cat => {
+    if(!byCategory[cat]) return;
+    html += `<h2 class="category-heading">${cat}</h2><div class="course-list">`;
+    byCategory[cat].forEach(c => html += renderCourse(c));
+    html += `</div>`;
+  });
+  root.innerHTML = html;
+}
+
+searchInput.addEventListener('input', render);
+render();
+</script>
+
+</body>
+</html>
