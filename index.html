@@ -58,8 +58,24 @@
     font-size:15px;
     color:#dfe9e1;
     max-width:640px;
-    margin:0 0 24px;
+    margin:0 0 20px;
   }
+
+  .upcoming-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--amber-500);
+    color:#3a2405;
+    text-decoration:none;
+    font-size:13.5px;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:999px;
+    margin-bottom:24px;
+    transition:background 0.15s ease;
+  }
+  .upcoming-btn:hover{background:var(--amber-600);}
 
   .tab-row{
     display:flex;
@@ -274,6 +290,7 @@
     <p class="eyebrow">Agri-Service Technical Training Program</p>
     <h1>Agri-Service Training Catalog</h1>
     <p class="header-sub">A reference of Agri-Service technician, parts, and safety training courses.</p>
+    <a class="upcoming-btn" href="https://akendall72-tech.github.io/Upcoming-training/" target="_blank" rel="noopener">&#128197; View Upcoming Trainings</a>
   </div>
   <div class="tab-row">
     <button class="tab-btn active" id="tabBtnInternal" data-tab="internal">Internal Agri-Service Training</button>
