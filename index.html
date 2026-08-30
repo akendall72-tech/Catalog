@@ -325,6 +325,138 @@
   }
   footer a{color:var(--green-700); text-decoration:none;}
   footer a:hover{text-decoration:underline;}
+
+  /* Institutional Syllabus */
+  .syllabus-intro{
+    text-align:center;
+    max-width:640px;
+    margin:0 auto 32px;
+  }
+  .syllabus-intro .eyebrow-sm{
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-size:11.5px;
+    font-weight:800;
+    color:var(--green-700);
+    margin:0 0 8px;
+  }
+  .syllabus-intro p{
+    font-size:14px;
+    color:var(--ink-600);
+    margin:0;
+  }
+  .mission-block{
+    background:linear-gradient(135deg, var(--green-900), var(--green-700));
+    color:#fff;
+    border-radius:14px;
+    padding:32px 36px;
+    margin-bottom:36px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .mission-block::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:4px;
+    background:var(--amber-500);
+  }
+  .mission-label{
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:11px;
+    font-weight:800;
+    color:var(--amber-500);
+    margin:0 0 12px;
+  }
+  .mission-quote{
+    font-size:19px;
+    line-height:1.5;
+    font-weight:600;
+    max-width:620px;
+    margin:0 auto;
+  }
+  .goals-heading{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-weight:800;
+    color:var(--green-800);
+    margin:0 0 16px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--green-700);
+  }
+  .goals-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+    gap:14px;
+    margin-bottom:40px;
+  }
+  .goal-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-top:3px solid var(--green-600);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:18px;
+  }
+  .goal-icon{
+    font-size:22px;
+    margin-bottom:8px;
+    display:block;
+  }
+  .goal-title{
+    font-size:14px;
+    font-weight:700;
+    color:var(--green-900);
+    margin:0 0 6px;
+  }
+  .goal-desc{
+    font-size:12.5px;
+    color:var(--ink-600);
+    margin:0;
+    line-height:1.5;
+  }
+  .policy-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:14px;
+  }
+  .policy-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-left:3px solid var(--amber-500);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:18px 20px;
+  }
+  .policy-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--green-900);
+    margin:0 0 8px;
+  }
+  .policy-icon{font-size:17px;}
+  .policy-desc{
+    font-size:13px;
+    color:var(--ink-600);
+    margin:0;
+    line-height:1.55;
+  }
+  .agreement-note{
+    margin-top:32px;
+    padding:16px 20px;
+    background:#eef4ef;
+    border:1px solid #dbe8dd;
+    border-radius:var(--radius);
+    font-size:12.5px;
+    color:var(--green-900);
+    text-align:center;
+  }
 </style>
 </head>
 <body>
@@ -342,6 +474,7 @@
   <div class="tab-row">
     <button class="tab-btn active" id="tabBtnInternal" data-tab="internal">Internal Agri-Service Training</button>
     <button class="tab-btn" id="tabBtnAgco" data-tab="agco">AGCO Facility Training</button>
+    <button class="tab-btn" id="tabBtnSyllabus" data-tab="syllabus">Institutional Syllabus</button>
   </div>
 </header>
 
@@ -361,6 +494,69 @@
   <div class="tab-panel" id="panelAgco">
     <div id="agcoRoot"></div>
     <p class="no-results" id="noResultsAgco">No courses match your search.</p>
+  </div>
+
+  <div class="tab-panel" id="panelSyllabus">
+    <div class="syllabus-intro">
+      <p class="eyebrow-sm">By Enrolling, You're Agreeing To This</p>
+      <p>Every Agri-Service technician, parts, and safety course operates under one shared set of goals, expectations, and policies that apply to every learner in every classroom and shop.</p>
+    </div>
+
+    <div class="mission-block">
+      <p class="mission-label">Training Department Mission Statement</p>
+      <p class="mission-quote">"We empower learners to think critically, solve challenges with confidence, and uncover root causes through engaging, practical training that fuels continuous growth."</p>
+    </div>
+
+    <h2 class="goals-heading">Institutional Goals</h2>
+    <div class="goals-grid">
+      <div class="goal-card">
+        <span class="goal-icon">&#128737;&#65039;</span>
+        <p class="goal-title">Safety</p>
+        <p class="goal-desc">Learn how to perform various procedures using OEM approved methods. In training, we focus on the complete, safe, and correct methods using industry accepted practices.</p>
+      </div>
+      <div class="goal-card">
+        <span class="goal-icon">&#129504;</span>
+        <p class="goal-title">Problem Solving</p>
+        <p class="goal-desc">Students must adapt the knowledge and skills they learn using synthesis to solve problems as a team.</p>
+      </div>
+      <div class="goal-card">
+        <span class="goal-icon">&#128269;</span>
+        <p class="goal-title">Critical Analysis</p>
+        <p class="goal-desc">Once a problem has been solved, we look back and seek to understand how the solution solved the issue, then adapt that solution to solve similar problems in the future.</p>
+      </div>
+      <div class="goal-card">
+        <span class="goal-icon">&#9881;&#65039;</span>
+        <p class="goal-title">Product-Specific Procedural Knowledge</p>
+        <p class="goal-desc">We seek to educate our employees on the basic operations and procedures of the machines and systems we sell.</p>
+      </div>
+      <div class="goal-card">
+        <span class="goal-icon">&#128260;</span>
+        <p class="goal-title">Fluency</p>
+        <p class="goal-desc">Performing skills and procedures repeatedly will build efficiency and fluency over time. In training, we offer the opportunity to practice skills and gain fluency.</p>
+      </div>
+    </div>
+
+    <h2 class="goals-heading">Student Policies</h2>
+    <div class="policy-grid">
+      <div class="policy-card">
+        <p class="policy-title"><span class="policy-icon">&#129309;</span> Behavioral Expectations</p>
+        <p class="policy-desc">Every student has the right to a respectful learning environment. To provide this right to all students, students must take individual responsibility to conduct themselves in a manner that is in alignment with the Agri-Service employee handbook and other policies. Students who fail to adhere to the expectations will be removed from class.</p>
+      </div>
+      <div class="policy-card">
+        <p class="policy-title"><span class="policy-icon">&#128220;</span> Academic Honesty</p>
+        <p class="policy-desc">Integrity and accountability are core values here at Agri-Service. All work submitted by a student must represent his or her own original ideas. Cheating, or plagiarism in any form, is unacceptable. Violations may result in disciplinary action ranging from failure of the assignment to failure of the entire course.</p>
+      </div>
+      <div class="policy-card">
+        <p class="policy-title"><span class="policy-icon">&#9888;&#65039;</span> Shop Safety</p>
+        <p class="policy-desc">Follow all posted Agri-Service safety policies found in UKG. Students found not following the posted safety policies will be removed from class.</p>
+      </div>
+      <div class="policy-card">
+        <p class="policy-title"><span class="policy-icon">&#128680;</span> Emergency Procedures</p>
+        <p class="policy-desc">Follow all posted emergency procedures and instructions for evacuation. Location specific procedures will be discussed at the beginning of each course.</p>
+      </div>
+    </div>
+
+    <p class="agreement-note">This Institutional Syllabus applies alongside the course-specific syllabus for every Agri-Service and AGCO Facility training listed in this catalog.</p>
   </div>
 </main>
 
@@ -611,12 +807,16 @@ const searchInput = document.getElementById('searchInput');
 
 let activeTab = 'internal';
 
+const controlsRow = document.querySelector('.controls');
+
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     activeTab = btn.dataset.tab;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
     document.getElementById('panelInternal').classList.toggle('active', activeTab === 'internal');
     document.getElementById('panelAgco').classList.toggle('active', activeTab === 'agco');
+    document.getElementById('panelSyllabus').classList.toggle('active', activeTab === 'syllabus');
+    controlsRow.style.display = (activeTab === 'syllabus') ? 'none' : '';
     render();
   });
 });
@@ -754,6 +954,10 @@ function agcoTotalCount(){
 }
 
 function render(){
+  if(activeTab === 'syllabus'){
+    resultCount.textContent = '';
+    return;
+  }
   const query = searchInput.value.trim();
   if(activeTab === 'internal'){
     const shown = renderInternal(query);
